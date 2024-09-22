@@ -23,6 +23,9 @@ startTime = time.time()
 vehicle_data = pd.read_csv('../CSV Files/merged_evDatawithZip.csv')
 vehicle_data.dropna(subset=['LAT', 'LNG'], inplace=True)
 
+# Filter out vehicles outside California's northern border (latitude > 42.0)
+vehicle_data = vehicle_data[vehicle_data['LAT'] <= 42.0]
+
 # Extract latitude, longitude, and vehicle counts
 latLng = vehicle_data[['LAT', 'LNG']].values
 vehicleCount = vehicle_data['Vehicles'].values.astype(int)

@@ -148,5 +148,5 @@ print(f"Total execution time: {executionTime:.2f} seconds")
 print(f"Successful EV station recommendations made: {successfulRecommendations}")
 
 print('\nGreen -> Existing EV Stations')
-print('\nBlue -> Amenities')
-print('\nRed -> Suggested EV Stations')
+print('Blue -> Amenities')
+print('Red -> Suggested EV Stations')

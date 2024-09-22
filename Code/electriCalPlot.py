@@ -7,11 +7,12 @@ from scipy.spatial import cKDTree
 from math import ceil
 import time
 
-def load_amenities(filename):
+def loadAmenities(filename):
     with open(filename, 'r', encoding='utf-8') as locationFile:
         return list(csv.reader(locationFile))[1:]
 
-def add_amenities_to_map(map_obj, amenities):
+# PLOTTING AMENITIES ON THE MAP EXCEPT FOR SCHOOLS
+def addAmenitiesOnMap(map_obj, amenities):
     for row in amenities:
         if row[2] != 'school':
             location = (float(row[2]), float(row[3]))
@@ -19,115 +20,113 @@ def add_amenities_to_map(map_obj, amenities):
 
 startTime = time.time()
 
-# Load the dataset
-vehicle_data = pd.read_csv('../CSV Files/merged_evDatawithZip.csv')
-vehicle_data.dropna(subset=['LAT', 'LNG'], inplace=True)
+# LOADING THE DATASET
+vehicleData = pd.read_csv('../CSV Files/merged_evDatawithZip.csv')
+vehicleData.dropna(subset=['LAT', 'LNG'], inplace=True)
 
-# Filter out vehicles outside California's northern border (latitude > 42.0)
-vehicle_data = vehicle_data[vehicle_data['LAT'] <= 42.0]
+# FILTERING OUT VEHICLES OUTSIDE CALIFORNIA'S NORTHERN BORDER FROM THE DATASET
+vehicleData = vehicleData[vehicleData['LAT'] <= 42.0]
 
-# Extract latitude, longitude, and vehicle counts
-latLng = vehicle_data[['LAT', 'LNG']].values
-vehicleCount = vehicle_data['Vehicles'].values.astype(int)
+# EXTRACTING LAT, LNG AND VEHICLE COUNT FROM DATASET
+latLng = vehicleData[['LAT', 'LNG']].values
+vehicleCount = vehicleData['Vehicles'].values.astype(int)
 
-# Create weighted data
+# CREATING WEIGHTED DATA - ASSIGNING VEHICLE COUNT TO THE LOCATIONS
 weighted_latLng = np.repeat(latLng, vehicleCount, axis=0)
 
-# Perform K-Means clustering
-optimal_clusters = min(2250, len(weighted_latLng))
-kmeans = KMeans(n_clusters=optimal_clusters, init='k-means++', random_state=42)
-y_kmeans = kmeans.fit_predict(weighted_latLng)
+# PERFORMING K-MEANS CLUSTERING
+optimalClusters = min(2250, len(weighted_latLng))
+kmeans = KMeans(n_clusters=optimalClusters, init='k-means++', random_state=42)
+yMeans = kmeans.fit_predict(weighted_latLng)
 
-# Map cluster labels to original dataset
-cluster_labels = np.zeros(len(vehicle_data), dtype=int)
+clusterLabels = np.zeros(len(vehicleData), dtype=int)
 index = 0
 for i, count in enumerate(vehicleCount):
-    cluster_labels[i] = np.bincount(y_kmeans[index:index + count]).argmax()
+    clusterLabels[i] = np.bincount(yMeans[index:index + count]).argmax()
     index += count
 
-vehicle_data['Cluster'] = cluster_labels
+vehicleData['Cluster'] = clusterLabels
 
-# KDTree for efficient distance calculations
-def count_vehicles_near_centroids(centroids, radius, locations):
+# USING KDTREE FOR DISTANCE CALCULATION
+def vehiclesNearCentroid(centroids, radius, locations):
     tree = cKDTree(locations)
-    radius_deg = radius / 111.32
-    return np.array([len(tree.query_ball_point(centroid, radius_deg)) for centroid in centroids])
+    radiusDeg = radius / 111.32 # CHANGING RADIUS FROM KM TO DEGREE
+    return np.array([len(tree.query_ball_point(centroid, radiusDeg)) for centroid in centroids])
 
-radius = 10  # 10 km radius
-centroid_vehicle_counts = count_vehicles_near_centroids(kmeans.cluster_centers_, radius, weighted_latLng)
+radius = 10  # 10KM RADIUS
+centroidVehicleCount = vehiclesNearCentroid(kmeans.cluster_centers_, radius, weighted_latLng)
 
-# Load EV station data
-existing_stations = None
-station_tree = None
-exclusion_radius_deg = 2 / 111.32  # 2 km radius in degrees
-comparison_radius_deg = 5 / 111.32  # 5 km radius in degrees for comparison
+# LOADING THE DATASET FOR THE EXISTING EV STATIONS
+existingStations = None
+stationTree = None
+exclusionRadius = 2 / 111.32  # 2KM RADIUS IN DEGREES
+comparisonRadius = 5 / 111.32  # 5KM RADIUS IN DEGREES
 
 try:
-    ev_stations = pd.read_csv('../CSV Files/dc_fast_charger_data.csv')
-    existing_stations = ev_stations[['Latitude', 'Longitude', 'DC Fast Count']].dropna().values
-    station_tree = cKDTree(existing_stations[:, :2])
+    evStations = pd.read_csv('../CSV Files/dc_fast_charger_data.csv')
+    existingStations = evStations[['Latitude', 'Longitude', 'DC Fast Count']].dropna().values
+    stationTree = cKDTree(existingStations[:, :2])
 except FileNotFoundError:
     print("EV stations file not found. Continuing without EV station data.")
 
-# Load amenities data and build KDTree
-amenities = load_amenities('../CSV Files/filtered_parking_locations.csv')
-amenity_locations = np.array([[float(row[2]), float(row[3])] for row in amenities])
-amenity_tree = cKDTree(amenity_locations)
-amenity_radius_deg = 2 / 111.32  # 2 km radius for amenities
+# LOADING AMENITIES DATA AND BUILDING KDTREE
+amenities = loadAmenities('../CSV Files/filtered_parking_locations.csv')
+amenityLocations = np.array([[float(row[2]), float(row[3])] for row in amenities])
+amenityTree = cKDTree(amenityLocations)
+amenityRadius = 2 / 111.32  # 2KM RADIUS IN DEGREES
 
-# Create the map
-base_location = [np.mean(vehicle_data['LAT']), np.mean(vehicle_data['LNG'])]
-my_map = folium.Map(location=base_location, zoom_start=10)
+# MAP CREATION
+baseLocation = [np.mean(vehicleData['LAT']), np.mean(vehicleData['LNG'])]
+evMap = folium.Map(location=baseLocation, zoom_start=10)
 
-# Add amenities to the map
-add_amenities_to_map(my_map, amenities)
+# ADDING AMENITIES TO THE MAP
+addAmenitiesOnMap(evMap, amenities)
 
-# Precompute centroids near existing stations
-if station_tree is not None:
-    nearby_stations_per_centroid = station_tree.query_ball_point(kmeans.cluster_centers_, exclusion_radius_deg)
+# CHECKING CENTROIDS AROUND THE EXISTING EV STATIONS
+if stationTree is not None:
+    stationsNearCentroid = stationTree.query_ball_point(kmeans.cluster_centers_, exclusionRadius)
 else:
-    nearby_stations_per_centroid = [[] for _ in range(len(kmeans.cluster_centers_))]
+    stationsNearCentroid = [[] for _ in range(len(kmeans.cluster_centers_))]
 
-# Add cluster centroid markers (suggested EV stations shifted to amenities)
-successful_recommendations = 0
-for centroid, count, nearby_stations in zip(kmeans.cluster_centers_, centroid_vehicle_counts, nearby_stations_per_centroid):
+# SHIFTING SUGGESTED EV STATIONS TO THE AMENITIES WITHIN 2KM RADIUS
+successfulRecommendations = 0
+for centroid, count, nearbyStations in zip(kmeans.cluster_centers_, centroidVehicleCount, stationsNearCentroid):
     if count > 5:
-        # Calculate required chargers for the suggested station
-        required_chargers = int(ceil(count / 16))
+        # CALCULATING REQUIRED CHARGERS FOR THE SUGGESTED STATION
+        requiredChargers = int(ceil(count / 16)) # Approximating that it takes 1.5 for an EV to charge fully (24 / 1.5 = 16)
 
-        if len(nearby_stations) == 0 and not np.isnan(centroid[0]) and not np.isnan(centroid[1]):
-            # Check for existing stations within a 5 km radius
-            nearby_stations_in_5km = station_tree.query_ball_point(centroid, comparison_radius_deg)
-            total_nearby_chargers = np.sum(existing_stations[nearby_stations_in_5km, 2])
+        if len(nearbyStations) == 0 and not np.isnan(centroid[0]) and not np.isnan(centroid[1]):
+            # CHECKING FOR EXISTING EV STATIONS WITHIN A 5KM RADIUS
+            nearbyStations5km = stationTree.query_ball_point(centroid, comparisonRadius)
+            totalChargersNearby = np.sum(existingStations[nearbyStations5km, 2])
 
-            # Subtract nearby existing chargers from required chargers
-            adjusted_charger_count = required_chargers - total_nearby_chargers
+            # SUBTRACTING EXISTING EV CHARGERS FROM THE SUGGESTED COUNT OF CHARGERS
+            adjustedChargerCount = requiredChargers - totalChargersNearby
 
-            # Only add the station if adjusted charger count is greater than 0
-            if adjusted_charger_count > 0:
-                # Find nearest amenity within 2 km radius
-                nearby_amenities = amenity_tree.query_ball_point(centroid, amenity_radius_deg)
-                if nearby_amenities:
-                    # Shift the suggested EV station to the nearest amenity
-                    nearest_amenity = amenity_locations[nearby_amenities[0]]
-                    shifted_location = (nearest_amenity[0], nearest_amenity[1])
+            # REMOVING THE STATIONS IF ADJUSTED CHARGER COUNT DROPS TO 0
+            if adjustedChargerCount > 0:
+                # FINDING NEAREST AMENITY WITHIN A 2KM RADIUS
+                nearbyAmenities = amenityTree.query_ball_point(centroid, amenityRadius)
+                if nearbyAmenities:
+                    # SHIFTING THE SUGGESTED EV STATION TO THE NEAREST AMENITY
+                    nearestAmenity = amenityLocations[nearbyAmenities[0]]
+                    shiftedLocation = (nearestAmenity[0], nearestAmenity[1])
                 else:
-                    # No nearby amenity, use the original centroid location
-                    shifted_location = (centroid[0], centroid[1])
+                    shiftedLocation = (centroid[0], centroid[1])
 
-                # Add suggested station to map
+                # ADDING SUGGESTED STATION TO THE MAP
                 folium.CircleMarker(
-                    location=shifted_location,
+                    location=shiftedLocation,
                     radius=3,
                     color='red',
-                    popup=f'Vehicles Nearby: {int(count)}\n\nRequired Chargers: {adjusted_charger_count}',
+                    popup=f'Vehicles Nearby: {int(count)}\n\nRequired Chargers: {adjustedChargerCount}',
                     icon=folium.Icon(color='red')
-                ).add_to(my_map)
-                successful_recommendations += 1
+                ).add_to(evMap)
+                successfulRecommendations += 1
 
-# Add existing EV station markers
-if existing_stations is not None:
-    for _, station in ev_stations.iterrows():
+# ADDING EXISTING EV STATIONS TO THE MAP
+if existingStations is not None:
+    for _, station in evStations.iterrows():
         if not pd.isna(station['Latitude']) and not pd.isna(station['Longitude']):
             folium.CircleMarker(
                 location=(station['Latitude'], station['Longitude']),
@@ -136,16 +135,18 @@ if existing_stations is not None:
                 fill=True,
                 icon=folium.Icon(color='green'),
                 popup=f' Chargers available : {station["DC Fast Count"]}'
-            ).add_to(my_map)
+            ).add_to(evMap)
     print("EV stations added to the map.")
 
-# Save the map
-my_map.save("latestEVPlot.html")
+evMap.save("latestEVPlot.html")
 print("Map has been saved as latestEVPlot.html")
 
 endTime = time.time()
-execution_time = endTime - startTime
+executionTime = endTime - startTime
 
-# Print results
-print(f"Total execution time: {execution_time:.2f} seconds")
-print(f"Successful EV station recommendations made: {successful_recommendations}")
+print(f"Total execution time: {executionTime:.2f} seconds")
+print(f"Successful EV station recommendations made: {successfulRecommendations}")
+
+print('\nGreen -> Existing EV Stations')
+print('\nBlue -> Amenities')
+print('\nRed -> Suggested EV Stations')

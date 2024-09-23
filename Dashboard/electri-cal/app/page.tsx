@@ -1,7 +1,10 @@
 import EvMap from "./components/evMap";
-import GenerateReport from "./components/generateReport";
+import GenerateReport from "./components/generateEvReport";
 import ElectriCal from "./components/Header/electriCal";
 import HelpMenu from "./components/Header/helpMenu";
+import GenerateRouteReport from "./components/RouteReport/generateRouteReport";
+import LocationInput from "./components/RouteReport/locationInput";
+import VehicleModelDropdown from "./components/RouteReport/vehicleModelDropdown";
 
 function Home() {
   return (
@@ -24,8 +27,13 @@ function Home() {
           </div>
 
           {/* COLUMN 2 */}
-          <div className="border border-white card p-2">
-            <h1>API Link</h1>
+          <div className="border border-primary-content card py-2 px-3 flex justify-center">
+            <div className="flex justify-center text-2xl mb-4 mt-2 text-primary">
+              <p className="font-bold">Route Report</p>
+            </div>
+            <VehicleModelDropdown />
+            <LocationInput />
+            <GenerateRouteReport />
           </div>
         </div>
       </div>

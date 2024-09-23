@@ -27,8 +27,10 @@ function Home() {
           </div>
 
           {/* COLUMN 2 */}
-          <div className="border border-white card p-2">
-            <h1>Route Report</h1>
+          <div className="border border-primary-content card py-2 px-3 flex justify-center">
+            <div className="flex justify-center text-2xl mb-4 mt-2 text-primary">
+              <p className="font-bold">Route Report</p>
+            </div>
             <VehicleModelDropdown />
             <LocationInput />
             <GenerateRouteReport />

@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 const VehicleModelDropdown = () => {
   const [selectedCar, setSelectedCar] = useState("");
@@ -18,7 +20,7 @@ const VehicleModelDropdown = () => {
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
   return (
-    <div>
+    <div className="mx-1">
       <select
         className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring focus:border-blue-500"
         value={selectedCar}
@@ -35,6 +37,7 @@ const VehicleModelDropdown = () => {
           </option>
         ))}
       </select>
+      {/* IMPLEMENT CARET DOWN BUTTON AT THE RIGHTMOST END OF THE DROPDOWN */}
     </div>
   );
 };

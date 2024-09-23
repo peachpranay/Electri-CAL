@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 
 const EvMap = () => {
   return (
@@ -8,6 +10,9 @@ const EvMap = () => {
         title="location Map"
         style={{ height: "100%", width: "100%" }}
       />
+      <div className="absolute top-3 right-3 p-2">
+        <FontAwesomeIcon icon={faCircleInfo} color="black" />
+      </div>
     </div>
   );
 };

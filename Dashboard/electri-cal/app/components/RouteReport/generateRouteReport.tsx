@@ -12,7 +12,12 @@ const GenerateRouteReport = ({
   destinationLng,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState("");
+  const [modalContent, setModalContent] = useState({
+    batteryState: "N/A",
+    distance: "N/A",
+    energyElectric: "N/A",
+    time: "N/A",
+  });
 
   const handleGenerateReport = async () => {
     const model_name = vehicleModel(selectedCar);
@@ -34,37 +39,42 @@ const GenerateRouteReport = ({
     };
 
     try {
-      const response = await fetch('https://cors-anywhere.herokuapp.com/https://developer.nrel.gov/api/routee/v3/compass/route?api_key=zppFQFGuTodoNmMaOOcKWWcGUdKyP4fZivqY2uSB', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      
+      const response = await fetch(
+        "https://cors-anywhere.herokuapp.com/https://developer.nrel.gov/api/routee/v3/compass/route?api_key=zppFQFGuTodoNmMaOOcKWWcGUdKyP4fZivqY2uSB",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      
+
       const routeData = data.route || {};
       const traversalSummary = routeData.traversal_summary || {};
-      
-  
-      setModalContent(`
-        Traversal Summary:
-        Battery State: ${traversalSummary.battery_state || 'N/A'} %
-        Distance: ${traversalSummary.distance || 'N/A'} km
-        Energy Electric: ${traversalSummary.energy_electric || 'N/A'} kWh
-        Time: ${traversalSummary.time || 'N/A'} minutes
-      `);
 
+      setModalContent({
+        batteryState: traversalSummary.battery_state.toFixed(3) || "N/A",
+        distance: traversalSummary.distance.toFixed(3) || "N/A",
+        energyElectric: traversalSummary.energy_electric.toFixed(3) || "N/A",
+        time: traversalSummary.time.toFixed(3) || "N/A",
+      });
     } catch (error) {
-      setModalContent("Error calculating compass route: " + error.message);
+      setModalContent({
+        batteryState: "N/A",
+        distance: "N/A",
+        energyElectric: "N/A",
+        time: "N/A",
+      });
+      console.error("Error calculating compass route: \n" + error.message);
     }
 
-  
     setIsModalOpen(true);
   };
 
@@ -81,10 +91,31 @@ const GenerateRouteReport = ({
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
-            <div className="text-black">
+            <div className="text-black text-md">
               <h2 className="text-xl font-bold mb-4">Route Report</h2>
-              <pre>{modalContent}</pre>
-            <button onClick={() => setIsModalOpen(false)} className="mt-4 bg-primary text-white px-4 py-2 rounded">Close</button>
+              <p>
+                <strong className="font-semibold">Battery State:</strong>{" "}
+                {modalContent.batteryState} %
+              </p>
+              <p>
+                <strong className="font-semibold">Distance:</strong>{" "}
+                {modalContent.distance} km
+              </p>
+              <p>
+                <strong className="font-semibold">Energy Electric:</strong>{" "}
+                {modalContent.energyElectric} kWh
+              </p>
+              <p>
+                <strong className="font-semibold">Time:</strong>{" "}
+                {modalContent.time} minutes
+              </p>
+
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="mt-4 bg-primary text-white px-4 py-2 rounded"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

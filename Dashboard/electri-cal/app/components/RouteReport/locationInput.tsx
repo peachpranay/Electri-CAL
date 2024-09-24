@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import StartLocation from "./startLocation";
+import Destination from "./destination";
 
 function LocationInput({
   startLat,
@@ -25,27 +27,12 @@ function LocationInput({
           />
         </div>
 
-        <div className="grid grid-cols-[1fr_0.1fr_2.5fr]">
-          <p className="flex self-center h-fit font-semibold">Latitude</p>
-          <p className="flex self-center h-fit font-semibold">:</p>
-          <input
-            type="text"
-            className="block rounded mb-2 text-black text-sm h-8 w-full font-semibold pl-2 bg-gray-200"
-            value={startLat}
-            onChange={(e) => setStartLat(e.target.value)}
-          />
-        </div>
-
-        <div className="grid grid-cols-[1fr_0.1fr_2.5fr]">
-          <p className="flex self-center font-semibold">Longitude</p>
-          <p className="flex self-center h-fit font-semibold">:</p>
-          <input
-            type="text"
-            className="block rounded mb-2 text-black text-sm h-8 w-full font-semibold pl-2 bg-gray-200"
-            value={startLng}
-            onChange={(e) => setStartLng(e.target.value)}
-          />
-        </div>
+        <StartLocation
+          startLat={startLat}
+          setStartLat={setStartLat}
+          startLng={startLng}
+          setStartLng={setStartLng}
+        />
       </div>
 
       <div className="card border border-dotted p-2 mt-2">
@@ -57,27 +44,12 @@ function LocationInput({
           />
         </div>
 
-        <div className="grid grid-cols-[1fr_0.1fr_2.5fr]">
-          <p className="flex self-center font-semibold">Latitude</p>
-          <p className="flex self-center h-fit font-semibold">:</p>
-          <input
-            type="text"
-            className="block rounded mb-2 text-black text-sm h-8 w-full font-semibold pl-2 bg-gray-200"
-            value={destinationLat}
-            onChange={(e) => setDestinationLat(e.target.value)}
-          />
-        </div>
-
-        <div className="grid grid-cols-[1fr_0.1fr_2.5fr]">
-          <p className="flex self-center font-semibold">Longitude</p>
-          <p className="flex self-center h-fit font-semibold">:</p>
-          <input
-            type="text"
-            className="block rounded mb-2 text-black text-sm h-8 w-full font-semibold pl-2 bg-gray-200"
-            value={destinationLng}
-            onChange={(e) => setDestinationLng(e.target.value)}
-          />
-        </div>
+        <Destination
+          destinationLat={destinationLat}
+          setDestinationLat={setDestinationLat}
+          destinationLng={destinationLng}
+          setDestinationLng={setDestinationLng}
+        />
       </div>
     </div>
   );

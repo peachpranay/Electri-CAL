@@ -66,10 +66,5 @@ pip install pandas numpy folium scikit-learn scipy
 
 ---
 
-## License
-This project is licensed under the MIT License.
-
----
-
 ## Contact
 For any questions or contributions, please reach out at [pranay.rajvanshi@gmail.com] [parthratra11@gmail.com].

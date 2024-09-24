@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-const LocationInput = () => {
-  const [startLat, setStartLat] = useState("");
-  const [startLng, setStartLng] = useState("");
-  const [destinationLat, setDestinationLat] = useState("");
-  const [destinationLng, setDestinationLng] = useState("");
-
+function LocationInput({
+  startLat,
+  setStartLat,
+  startLng,
+  setStartLng,
+  destinationLat,
+  setDestinationLat,
+  destinationLng,
+  setDestinationLng,
+}) {
   return (
     <div>
       <div className="card border border-dotted p-2 mt-4">
@@ -77,6 +81,6 @@ const LocationInput = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LocationInput;

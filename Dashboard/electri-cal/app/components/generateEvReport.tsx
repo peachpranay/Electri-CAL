@@ -1,6 +1,5 @@
-// "use client";
-
 // import React, { useState } from "react";
+// import { SiGooglegemini } from "react-icons/si";
 
 // const GenerateReport = () => {
 //   const [report, setReport] = useState(null);
@@ -12,59 +11,45 @@
 //   const fetchPerplexityResponse = async () => {
 //     setIsLoading(true);
 //     try {
-//       const existingStationsFile = await fetch(
-//         "/dc_fast_charger_data.csv"
-//       ).then((res) => res.text());
-//       const suggestedStationsFile = await fetch(
-//         "/suggested_ev_stations.csv"
-//       ).then((res) => res.text());
+//       // Fetching the three CSV files
+//       const existingStationsFile = await fetch("/dc_fast_charger_data.csv").then((res) => res.text());
+//       const evDataWithZipFile = await fetch("/merged_evDatawithZip.csv").then((res) => res.text());
+//       const suggestedStationsFile = await fetch("/suggested_ev_stations.csv").then((res) => res.text());
 
-//       const existingStations = existingStationsFile
-//         .split("\n")
-//         .slice(1)
-//         .map((row) => row.split(","));
-//       const suggestedStations = suggestedStationsFile
-//         .split("\n")
-//         .slice(1)
-//         .map((row) => row.split(","));
+//       // Parsing CSV data into arrays
+//       const existingStations = existingStationsFile.split("\n").slice(1).map((row) => row.split(","));
+//       const evDataWithZip = evDataWithZipFile.split("\n").slice(1).map((row) => row.split(","));
+//       const suggestedStations = suggestedStationsFile.split("\n").slice(1).map((row) => row.split(","));
 
-//       const prompt = `Analyze the existing and suggested EV charging stations in California and provide a comprehensive report.`;
+//       // Constructing the prompt for the Perplexity API
+//       const prompt = `
+//         Analyze the existing and suggested EV charging stations in California and provide a comprehensive report.
+//         Existing Stations: ${JSON.stringify(existingStations)}
+//         EV Data with Zip: ${JSON.stringify(evDataWithZip)}
+//         Suggested Stations: ${JSON.stringify(suggestedStations)}
+//       `;
 
-//       const perplexityResponse = await fetch(
-//         "https://api.perplexity.ai/chat/completions",
-//         {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${API_KEY}`,
-//           },
-//           body: JSON.stringify({
-//             model: "gpt-3.5-turbo",
-//             messages: [
-//               {
-//                 role: "system",
-//                 content:
-//                   "You are an AI assistant analyzing EV charging station data.",
-//               },
-//               { role: "user", content: prompt },
-//               {
-//                 role: "user",
-//                 content: `Existing stations: ${JSON.stringify(
-//                   existingStations
-//                 )}`,
-//               },
-//               {
-//                 role: "user",
-//                 content: `Suggested stations: ${JSON.stringify(
-//                   suggestedStations
-//                 )}`,
-//               },
-//             ],
-//             max_tokens: 1000,
-//           }),
-//         }
-//       );
+//       // Sending request to Perplexity API
+//       const perplexityResponse = await fetch("https://api.perplexity.ai/chat/completions", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${API_KEY}`,
+//         },
+//         body: JSON.stringify({
+//           model: "gpt-3.5-turbo",
+//           messages: [
+//             {
+//               role: "system",
+//               content: "You are an AI assistant analyzing EV charging station data.",
+//             },
+//             { role: "user", content: prompt },
+//           ],
+//           max_tokens: 1000,
+//         }),
+//       });
 
+//       // Handling the response
 //       const data = await perplexityResponse.json();
 //       setReport(JSON.parse(data.choices[0].message.content));
 //       setShowPopup(true);
@@ -79,12 +64,12 @@
 //   return (
 //     <div className="pt-3 relative">
 //       <button
-//         className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10
+//         className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10 
 //         hover:bg-base-300 hover:opacity-80 hover:border-primary-content"
 //         onClick={fetchPerplexityResponse}
 //         disabled={isLoading}
 //       >
-//         {isLoading ? "Generating..." : "Generate Report"}
+//         {isLoading ? "Generating..." : "Generate Report"} <SiGooglegemini className="ml-1" />
 //       </button>
 //       {showPopup && report && (
 //         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -108,7 +93,6 @@
 
 // export default GenerateReport;
 
-"use client";
 import { SiGooglegemini } from "react-icons/si";
 import React, { useState } from "react";
 
@@ -118,32 +102,48 @@ const GenerateReport = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   const demoReport = {
-    title: "Optimizing California's Electric Vehicle Charging Infrastructure",
+    title: "Suggested Charging Stations in Los Angeles, ZIP 90012",
     sections: [
       {
-        heading: "Current Infrastructure Overview",
-        content:
-          "California's existing EV charging network consists of 493 unique locations with DC fast charging stations. This infrastructure has been crucial in supporting the state's growing EV adoption.",
+        heading: "Recommended Charging Stations",
+        content: `
+          Based on clustering analysis, additional chargers have been recommended for ZIP code 90012 to meet the growing demand:
+          - Suggested Station ID 78834: Located at latitude 34.01223 and longitude -118.334323 with a recommendation for 4 chargers.
+          - Suggested Station ID 81130: Located at latitude 34.049772 and longitude -118.245106 with a recommendation for 4 chargers.
+        `,
       },
       {
-        heading: "Optimization Strategy",
-        content:
-          "The new suggested charging stations, determined through K-means clustering analysis, aim to enhance the existing network by strategically placing chargers where they are most needed. This data-driven approach offers several key benefits:",
+        heading: "Existing Charging Stations",
+        content: `
+          In ZIP code 90012, there are several existing charging stations. Notable ones include:
+          - Station ID 1525: Located at latitude 34.059133 and longitude -118.248589 with 12 chargers.
+          - Station ID 1572: Located at latitude 34.066801 and longitude -118.227605 with 1 charger.
+          - Station ID 63047: Located at latitude 34.055505 and longitude -118.248852 with 3 chargers.
+          - Station ID 63052: Located at latitude 34.060148 and longitude -118.250747 with 6 chargers.
+        `,
       },
       {
-        heading: "Key Improvements",
-        content: [
-          "Expanded Coverage: The suggested stations significantly increase the number of charging locations, potentially more than doubling the current infrastructure.",
-          "Demand-Based Distribution: The new stations are allocated based on the number of vehicles nearby, ensuring that areas with higher EV concentrations receive more chargers.",
-          "Rural Area Support: The plan includes smaller stations (1-10 chargers) in less populated areas, ensuring statewide coverage and enabling long-distance EV travel.",
-          "High-Capacity Stations: In high-demand areas, the plan suggests large charging hubs with over 100 chargers, which can significantly reduce waiting times during peak hours.",
-          "Balanced Urban-Rural Distribution: While focusing on high-demand urban areas, the plan also includes stations in smaller towns and along major highways, creating a comprehensive network.",
-        ],
+        heading: "Analysis of Recommendations",
+        content: `
+          **Proximity of EVs to Charging Stations**
+          - EV Density: The area has a significant number of battery electric vehicles, totaling 1,446 EVs in ZIP code 90012. This high density indicates a strong demand for additional charging infrastructure.
+          - Strategic Locations: The recommended locations are strategically placed to cover areas within the ZIP code that may not be adequately served by existing stations.
+
+          **Reasons for New Charging Stations**
+          - High Demand: The high number of EVs relative to the available charging points suggests potential congestion during peak hours.
+          - Urban Center: As a central urban area, Los Angeles's ZIP code 90012 experiences high traffic volumes, making it essential to have sufficient charging capacity to support both residents and commuters.
+
+          **Cost Considerations**
+          The cost of installing new charging stations includes:
+          - Equipment and Installation Costs: Costs associated with purchasing chargers, site preparation, and installation.
+          - Operational Costs: Ongoing maintenance and potential upgrades to electrical infrastructure.
+          - Funding Opportunities: Potential subsidies or incentives from government programs can help offset some costs.
+        `,
       },
       {
         heading: "Conclusion",
         content:
-          "The suggested optimization of California's EV charging infrastructure represents a significant step forward in supporting the state's transition to electric vehicles. By strategically placing new charging stations based on demand and geographic distribution, this plan addresses current gaps in the network and prepares for future growth in EV adoption.",
+          "The recommendation for additional charging stations in Los Angeles's ZIP code 90012 is based on a detailed analysis of EV distribution, existing infrastructure capacity, and strategic location needs. These additions will help alleviate congestion at existing stations and ensure that the growing demand for EV charging is met efficiently.",
       },
     ],
   };
@@ -179,15 +179,7 @@ const GenerateReport = () => {
                 <h3 className="text-xl font-semibold mb-2 text-black">
                   {section.heading}
                 </h3>
-                {Array.isArray(section.content) ? (
-                  <ul className="list-disc pl-5 text-black">
-                    {section.content.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-black">{section.content}</p>
-                )}
+                <p className="text-black whitespace-pre-wrap">{section.content}</p>
               </div>
             ))}
             <button

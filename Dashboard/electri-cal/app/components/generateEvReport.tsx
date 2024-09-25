@@ -64,7 +64,7 @@
 //   return (
 //     <div className="pt-3 relative">
 //       <button
-//         className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10 
+//         className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10
 //         hover:bg-base-300 hover:opacity-80 hover:border-primary-content"
 //         onClick={fetchPerplexityResponse}
 //         disabled={isLoading}
@@ -154,7 +154,7 @@ const GenerateReport = () => {
       setReport(demoReport);
       setShowPopup(true);
       setIsLoading(false);
-    }, 20000); // 20 seconds delay
+    }, 200); // 20 seconds delay
   };
 
   return (
@@ -179,15 +179,25 @@ const GenerateReport = () => {
                 <h3 className="text-xl font-semibold mb-2 text-black">
                   {section.heading}
                 </h3>
-                <p className="text-black whitespace-pre-wrap">{section.content}</p>
+                <p className="text-black whitespace-pre-wrap">
+                  {section.content}
+                </p>
               </div>
             ))}
-            <button
-              className="mt-4 bg-primary text-white px-4 py-2 rounded"
-              onClick={() => setShowPopup(false)}
-            >
-              Close
-            </button>
+            <div className="grid grid-cols-[1fr_1fr]">
+              <button
+                className="mt-4 bg-primary text-white px-4 py-2 rounded justify-start mr-20"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </button>
+              <button
+                className="mt-4 bg-accent text-white px-4 py-2 rounded ml-20"
+                onClick={() => setShowPopup(false)}
+              >
+                Save as PDF
+              </button>
+            </div>
           </div>
         </div>
       )}

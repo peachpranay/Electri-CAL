@@ -29,6 +29,13 @@ This Python script uses K-Means clustering and spatial data analysis to recommen
      - Suggested EV station locations with appropriate markers and popups displaying the estimated number of required chargers.
    - Saves the generated map as an HTML file (`latestEVPlot.html`).
    - Prints the total execution time and the number of successful recommendations made for new EV stations.
+5. **Dashboard Features:**
+   - Interactive Map:
+     - Displays suggested, existing charging stations, and amenities.
+   - Report Generation:
+     - Button to generate reports about how suggested chargers optimize EV charging stations in California using Perplexity Gen AI.
+   - Travel Metrics Analysis:
+     - Provides details on battery consumption, travel time, battery level, and distance based on the EV model and specified locations.
 
 ## Benefits
 This script helps address the growing demand for EV charging infrastructure in California by recommending data-driven, geographically optimized locations for new EV charging stations. It ensures accessibility by factoring in vehicle distribution patterns and leveraging existing amenities such as parking lots.

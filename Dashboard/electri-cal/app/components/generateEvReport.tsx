@@ -154,7 +154,7 @@ const GenerateReport = () => {
       setReport(demoReport);
       setShowPopup(true);
       setIsLoading(false);
-    }, 200); // 20 seconds delay
+    }, 20000); // 20 seconds delay
   };
 
   return (

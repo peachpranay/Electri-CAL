@@ -1,1 +1,7 @@
 /.vscode
+/myenv
+
+/Prediction Model/latestEVPlot_temp.html
+/Prediction Model/suggested_ev_stations_temp.csv
+/Prediction Model/elevationCountCheck.py
+/Prediction Model/electriCalCsv.py

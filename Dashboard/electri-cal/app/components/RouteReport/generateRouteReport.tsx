@@ -38,9 +38,12 @@ const GenerateRouteReport = ({
       },
     };
 
+    // ! HIDE IT LATER
+    const ROUTE_API_KEY = "zppFQFGuTodoNmMaOOcKWWcGUdKyP4fZivqY2uSB";
+
     try {
       const response = await fetch(
-        "https://cors-anywhere.herokuapp.com/https://developer.nrel.gov/api/routee/v3/compass/route?api_key=zppFQFGuTodoNmMaOOcKWWcGUdKyP4fZivqY2uSB",
+        `https://cors-anywhere.herokuapp.com/https://developer.nrel.gov/api/routee/v3/compass/route?api_key=${ROUTE_API_KEY}`,
         {
           method: "POST",
           headers: {

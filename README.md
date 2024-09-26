@@ -22,6 +22,7 @@ This Python script uses K-Means clustering and spatial data analysis to recommen
    - Calculates the required number of chargers based on the cluster’s vehicle count.
    - Identifies nearby amenities (e.g., parking locations) and suggests shifting the EV station location to the nearest amenity for better accessibility.
    - If no nearby amenities are found, the original centroid location is used for the EV station.
+   - All regions with elevation ≥ 1500m are shifted to the nearest existing EV station within a 10km radius.
 
 4. **Visualization and Output:**
    - Generates a Folium map centered on California, showing:

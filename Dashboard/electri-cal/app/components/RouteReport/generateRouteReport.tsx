@@ -38,8 +38,8 @@ const GenerateRouteReport = ({
       },
     };
 
-    // ! HIDE IT LATER
-    const ROUTE_API_KEY = "zppFQFGuTodoNmMaOOcKWWcGUdKyP4fZivqY2uSB";
+    // ENTER YOUR API KEY HERE
+    const ROUTE_API_KEY = process.env.ROUTE_API_KEY; 
 
     try {
       const response = await fetch(

@@ -39,6 +39,7 @@ const GenerateRouteReport = ({
       },
     };
 
+    // INSERT YOUR API KEY HERE
     const ROUTE_API_KEY = process.env.NEXT_PUBLIC_ROUTE_API_KEY;
 
     if (!ROUTE_API_KEY) {

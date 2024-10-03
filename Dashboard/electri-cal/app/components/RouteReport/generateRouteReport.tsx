@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+require("dotenv").config();
 
 const vehicleModel = (selectedCar) => {
   return selectedCar.replace(/ /g, "_");
@@ -38,8 +39,12 @@ const GenerateRouteReport = ({
       },
     };
 
-    // ENTER YOUR API KEY HERE
-    const ROUTE_API_KEY = process.env.ROUTE_API_KEY; 
+    // INSERT YOUR API KEY HERE
+    const ROUTE_API_KEY = process.env.NEXT_PUBLIC_ROUTE_API_KEY;
+
+    if (!ROUTE_API_KEY) {
+      console.error("API Key not found !");
+    }
 
     try {
       const response = await fetch(
@@ -85,7 +90,7 @@ const GenerateRouteReport = ({
     <div>
       <button
         className="mt-4 text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-sm size-10 
-        hover:bg-base-300 hover:opacity-80 hover:border-primary-content"
+        hover:bg-base-300 hover:opacity-75 hover:border-primary-content"
         onClick={handleGenerateReport}
       >
         Generate Route Report

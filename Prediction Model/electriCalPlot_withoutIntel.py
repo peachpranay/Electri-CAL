@@ -33,7 +33,7 @@ def get_elevation_from_open_elevation(lat, lon, retries = 3):
         except Exception as e:
             attempt += 1
             
-    print(f"Error fetching elevation for ({lat}, {lon}): {e}")
+    print(f"Error fetching elevation for ({lat}, {lon})")
     return None
 
 startTime = time.time()

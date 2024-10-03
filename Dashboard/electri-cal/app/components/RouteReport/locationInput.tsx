@@ -18,12 +18,12 @@ function LocationInput({
 }) {
   return (
     <div>
-      <div className="card border border-dotted p-2 mt-4">
+      <div className="card border border-gray-500 p-2 mt-4">
         <div className="flex flex-row mb-4">
-          <p className="font-bold">Starting Location</p>
+          <p className="font-bold text-gray-300">Starting Location</p>
           <FontAwesomeIcon
             icon={faArrowRight}
-            className="flex self-center ml-2"
+            className="flex self-center ml-2 text-gray-300"
           />
         </div>
 
@@ -35,12 +35,12 @@ function LocationInput({
         />
       </div>
 
-      <div className="card border border-dotted p-2 mt-2">
+      <div className="card border border-gray-500 p-2 mt-2 ">
         <div className="flex flex-row mb-4">
-          <p className="font-bold">Destination</p>
+          <p className="font-bold text-gray-300">Destination</p>
           <FontAwesomeIcon
             icon={faArrowRight}
-            className="flex self-center ml-2"
+            className="flex self-center ml-2 text-gray-300"
           />
         </div>
 

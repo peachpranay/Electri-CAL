@@ -129,8 +129,8 @@ def generate_report(zip_code):
 
     report_content += f'\nIntel TinyBert Model\'s Analysis : {classification_result} of the EV Vehicles at the zipcode : {zip_code}\n'
     
-    with open(f"ev_report_zip_{zip_code}.txt", "w") as f:
-        f.write(report_content)
+    # with open(f"ev_report_zip_{zip_code}.txt", "w") as f:
+    #     f.write(report_content)
     return report_content
 
 

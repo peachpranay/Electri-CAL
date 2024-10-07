@@ -36,3 +36,24 @@ const EvMapInfo = () => {
 };
 
 export default EvMapInfo;
+
+// import React from "react";
+
+// const EvMapInfo = ({ stationData }) => {
+//   // If no station is clicked, show a default message
+//   if (!stationData) {
+//     return <div>No station selected</div>;
+//   }
+
+//   // Display the data received from the iframe
+//   return (
+//     <div className="info-box">
+//       <h3>Station Info</h3>
+//       <p>Vehicles Nearby: {stationData.vehiclesNearby}</p>
+//       <p>Chargers: {stationData.chargers}</p>
+//       <p>Location: {stationData.stationLocation}</p>
+//     </div>
+//   );
+// };
+
+// export default EvMapInfo;

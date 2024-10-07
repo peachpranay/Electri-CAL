@@ -27,10 +27,12 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.venv
 
 # vercel
 .vercel
-
+# __pycache__ directory
+./Prediction Model/__pycache__/
 # typescript
 *.tsbuildinfo
 next-env.d.ts

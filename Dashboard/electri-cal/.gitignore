@@ -31,8 +31,7 @@ yarn-error.log*
 
 # vercel
 .vercel
-# __pycache__ directory
-./Prediction Model/__pycache__/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

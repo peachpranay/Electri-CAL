@@ -1,10 +1,45 @@
 "use client";
 
-
 import { SiGooglegemini } from "react-icons/si";
 import React, { useState } from "react";
 import Select from "react-select";
 import axios from "axios";
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+
+
+const styles = StyleSheet.create({
+  page: { padding: 30 },
+  section: { margin: 10, padding: 10 },
+  heading: { fontSize: 18, marginBottom: 10, fontWeight: 'bold' },
+  subheading: { fontSize: 14, marginBottom: 5, fontWeight: 'bold' },
+  content: { fontSize: 12, marginBottom: 10 },
+});
+
+
+const formatReport = (reportText) => {
+  const sections = reportText.split('\n\n');
+  return sections.map((section, index) => {
+    const [heading, ...content] = section.split('\n');
+    return { heading, content: content.join('\n') };
+  });
+};
+
+
+const PDFDocument = ({ report }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.heading}>EV Charging Report</Text>
+        {formatReport(report).map((section, index) => (
+          <View key={index} style={styles.section}>
+            <Text style={styles.subheading}>{section.heading}</Text>
+            <Text style={styles.content}>{section.content}</Text>
+          </View>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
 
 const GenerateReport = () => {
   const [report, setReport] = useState(null);
@@ -36,14 +71,6 @@ const GenerateReport = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatReport = (reportText) => {
-    const sections = reportText.split('\n\n');
-    return sections.map((section, index) => {
-      const [heading, ...content] = section.split('\n');
-      return { heading, content: content.join('\n') };
-    });
   };
 
   const ErrorPopup = ({ message, onClose }) => (
@@ -109,12 +136,15 @@ const GenerateReport = () => {
               >
                 Close
               </button>
-              <button
-                className="mt-4 bg-accent text-white px-4 py-2 rounded ml-20"
-                onClick={() => setShowPopup(false)}
+              <PDFDownloadLink
+                document={<PDFDocument report={report} />}
+                fileName="ev_charging_report.pdf"
+                className="mt-4 bg-accent text-white px-4 py-2 rounded ml-20 text-center"
               >
-                Save as PDF
-              </button>
+                {({ blob, url, loading, error }) =>
+                  loading ? 'Loading document...' : 'Save as PDF'
+                }
+              </PDFDownloadLink>
             </div>
           </div>
         </div>

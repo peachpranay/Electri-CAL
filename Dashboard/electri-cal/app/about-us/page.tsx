@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import ElectriCal from "../components/Header/electriCal";
 import HelpMenu from "../components/Header/aboutUs";
 

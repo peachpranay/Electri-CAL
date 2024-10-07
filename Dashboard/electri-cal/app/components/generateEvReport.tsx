@@ -29,7 +29,7 @@ const PDFDocument = ({ report }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text style={styles.heading}>EV Charging Report</Text>
+        <Text style={styles.heading}>EV Charging Report </Text>
         {formatReport(report).map((section, index) => (
           <View key={index} style={styles.section}>
             <Text style={styles.subheading}>{section.heading}</Text>
@@ -63,7 +63,8 @@ const GenerateReport = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/generate_report/${selectedZipCode.value}`);
+      const response = await axios.get(`http://localhost:8000/generate_report/${selectedZipCode.value}`);
+
       setReport(response.data.report);
       setShowPopup(true);
     } catch (error) {
@@ -120,7 +121,7 @@ const GenerateReport = () => {
       {showPopup && report && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl max-h-[80vh] overflow-auto">
-            <h2 className="text-2xl font-bold mb-4 text-black">EV Charging Report</h2>
+            <h2 className="text-2xl font-bold mb-4 text-black">EV Charging Stations Report for Zip code: {selectedZipCode.value}</h2>
             {formatReport(report).map((section, index) => (
               <div key={index} className="mb-4">
                 <h3 className="text-xl font-semibold mb-2 text-black">
@@ -138,7 +139,8 @@ const GenerateReport = () => {
               </button>
               <PDFDownloadLink
                 document={<PDFDocument report={report} />}
-                fileName="ev_charging_report.pdf"
+                fileName={`EVChargingReport-${selectedZipCode.value}.pdf`}
+
                 className="mt-4 bg-accent text-white px-4 py-2 rounded ml-20 text-center"
               >
                 {({ blob, url, loading, error }) =>

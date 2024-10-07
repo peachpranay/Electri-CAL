@@ -1,8 +1,8 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI,Request
 
 from fastapi import  HTTPException
-
+import httpx
 from aiModel import generate_report
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
@@ -15,6 +15,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.post("/route_report")
+async def proxy(request: Request):
+    json_data = await request.json()
+    api_key = request.headers.get("X-API-Key")
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://developer.nrel.gov/api/routee/v3/compass/route",
+            params={"api_key": api_key},
+            json=json_data
+        )
+    
+    return response.json()
 
 @app.get("/generate_report/{zip_code}")
 async def get_report(zip_code: str):

@@ -24,7 +24,7 @@ function VehicleModelDropdown({ selectedCar, setSelectedCar }) {
     <div className="relative mx-1">
       <select
         className="block appearance-none w-full bg-gray-200 border border-gray-300 text-gray-700 
-        py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring focus:border-blue-500"
+        py-2 px-3 pr-8 rounded leading-tight focus:outline-none focus:ring focus:border-blue-500 font-medium"
         value={selectedCar}
         onChange={(e) => {
           setSelectedCar(e.target.value);

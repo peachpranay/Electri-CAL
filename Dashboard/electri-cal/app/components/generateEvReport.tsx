@@ -1,3 +1,5 @@
+// "use client";
+
 // import React, { useState } from "react";
 // import { SiGooglegemini } from "react-icons/si";
 
@@ -95,11 +97,29 @@
 
 import { SiGooglegemini } from "react-icons/si";
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
 
 const GenerateReport = () => {
   const [report, setReport] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+
+  const [selectedZip, setSelectedZip] = useState("");
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [filterSearch, setFilterSearch] = useState("");
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const zipOptions = [];
+  for (let i = 90001; i <= 99362; i++) {
+    zipOptions.push({ label: i, value: i });
+  }
+
+  const filteredZipOptions = zipOptions.map(String).filter((zipCode) => {
+    return zipCode.includes(filterSearch);
+  });
 
   const demoReport = {
     title: "Suggested Charging Stations in Los Angeles, ZIP 90012",
@@ -149,25 +169,40 @@ const GenerateReport = () => {
   };
 
   const generateDemoReport = () => {
+    console.log(selectedOption["value"]); //! TO CHECK IF THE REPORT IS BEING GENERATED FOR THE CORRECT ZIPCODE, TO BE REMOVED LATER
     setIsLoading(true);
     setTimeout(() => {
       setReport(demoReport);
       setShowPopup(true);
       setIsLoading(false);
-    }, 20000); // 20 seconds delay
+    });
   };
 
   return (
     <div className="pt-3 relative">
-      <button
-        className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10 
+      <div className=" grid grid-cols-[1fr_4fr]">
+        <div className="relative ml-1 mr-2 card justify-center text-gray-500">
+          <Select
+            placeholder="ZIP Code"
+            options={zipOptions}
+            value={selectedOption}
+            onChange={(option) => {
+              setSelectedOption(option);
+            }}
+            className="font-medium text-gray-500"
+            menuPlacement="auto"
+          />
+        </div>
+        <button
+          className="text-primary shadow-sm shadow-primary-content border-primary-content btn w-full bg-base-300 font-bold text-xl size-10 
         hover:bg-base-300 hover:opacity-75 hover:border-primary-content"
-        onClick={generateDemoReport}
-        disabled={isLoading}
-      >
-        {isLoading ? "Generating..." : "Generate Report "}{" "}
-        <SiGooglegemini className="ml-1" />
-      </button>
+          onClick={generateDemoReport}
+          disabled={isLoading}
+        >
+          {isLoading ? "Generating..." : "Generate Report "}{" "}
+          <SiGooglegemini className="ml-1" />
+        </button>
+      </div>
       {showPopup && report && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl max-h-[80vh] overflow-auto">

@@ -48,10 +48,17 @@ The following Python libraries are required:
 - `folium`
 - `scikit-learn`
 - `scipy`
+- `pytorch`
+- `transformers`
+-  `fastapi`
+-  `geopy`
+- `modin[all]`
+- `requests`
+- `ray`
 
 Install these libraries using `pip`:
 ```bash
-pip install pandas numpy folium scikit-learn scipy
+pip install pandas numpy folium scikit-learn scipy pytoch transformers fastapi geopy modin[all] requests ray 
 ```
 
 ## Usage Instructions

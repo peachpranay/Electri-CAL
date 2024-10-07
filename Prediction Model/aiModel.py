@@ -17,7 +17,7 @@ model = BertForSequenceClassification.from_pretrained(model_dir)
 
 # Generate report for a specific ZIP code
 def generate_report(zip_code):
-    report_content = 'Recommended Charging Stations:\n'
+    report_content = f'Recommended Charging Stations :\n'
     zip_lat, zip_lon = -1, -1
 
     if int(zip_code) not in list(vehicle_data['ZIP'].values):

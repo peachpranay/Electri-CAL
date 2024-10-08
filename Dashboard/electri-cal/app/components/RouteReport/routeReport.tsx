@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import RouteReportModal from "./routeReportModal";
 require("dotenv").config();
 
 const vehicleModel = (selectedCar) => {
@@ -47,16 +48,14 @@ const GenerateRouteReport = ({
     }
 
     try {
-      const response = await fetch(
-        `https://cors-anywhere.herokuapp.com/https://developer.nrel.gov/api/routee/v3/compass/route?api_key=${ROUTE_API_KEY}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch("http://localhost:8000/route_report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": ROUTE_API_KEY,
+        },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -68,10 +67,10 @@ const GenerateRouteReport = ({
       const traversalSummary = routeData.traversal_summary || {};
 
       setModalContent({
-        batteryState: traversalSummary.battery_state.toFixed(3) || "N/A",
-        distance: traversalSummary.distance.toFixed(3) || "N/A",
-        energyElectric: traversalSummary.energy_electric.toFixed(3) || "N/A",
-        time: traversalSummary.time.toFixed(3) || "N/A",
+        batteryState: traversalSummary.battery_state?.toFixed(3) || "N/A",
+        distance: traversalSummary.distance?.toFixed(3) || "N/A",
+        energyElectric: traversalSummary.energy_electric?.toFixed(3) || "N/A",
+        time: traversalSummary.time?.toFixed(3) || "N/A",
       });
     } catch (error) {
       setModalContent({
@@ -97,36 +96,10 @@ const GenerateRouteReport = ({
       </button>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg max-w-md w-full">
-            <div className="text-black text-md">
-              <h2 className="text-xl font-bold mb-4">Route Report</h2>
-              <p>
-                <strong className="font-semibold">Battery State:</strong>{" "}
-                {modalContent.batteryState} %
-              </p>
-              <p>
-                <strong className="font-semibold">Distance:</strong>{" "}
-                {modalContent.distance} km
-              </p>
-              <p>
-                <strong className="font-semibold">Energy Electric:</strong>{" "}
-                {modalContent.energyElectric} kWh
-              </p>
-              <p>
-                <strong className="font-semibold">Time:</strong>{" "}
-                {modalContent.time} minutes
-              </p>
-
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="mt-4 bg-primary text-white px-4 py-2 rounded"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
+        <RouteReportModal
+          modalContent={modalContent}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
     </div>
   );

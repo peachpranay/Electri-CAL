@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import EvMap from "./components/evMap";
-import GenerateReport from "./components/generateEvReport";
+import GenerateReport from "./components/EvReport/evReport";
 import ElectriCal from "./components/Header/electriCal";
 import HelpMenu from "./components/Header/aboutUs";
-import GenerateRouteReport from "./components/RouteReport/generateRouteReport";
+import GenerateRouteReport from "./components/RouteReport/routeReport";
 import LocationInput from "./components/RouteReport/locationInput";
 import VehicleModelDropdown from "./components/RouteReport/vehicleModelDropdown";
 

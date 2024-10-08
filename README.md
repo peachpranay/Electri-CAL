@@ -34,7 +34,7 @@ This Python script uses K-Means clustering and spatial data analysis to recommen
    - Interactive Map:
      - Displays suggested, existing charging stations, and amenities.
    - Report Generation:
-     - Button to generate reports about how suggested chargers optimize EV charging stations in California using Perplexity Gen AI.
+     - Button to generate reports about how suggested chargers in a particular pincode optimize EV charging stations using Dynamic TinyBert Model.
    - Travel Metrics Analysis:
      - Provides details on battery consumption, travel time, battery level, and distance based on the EV model and specified locations.
 
@@ -48,10 +48,17 @@ The following Python libraries are required:
 - `folium`
 - `scikit-learn`
 - `scipy`
+- `pytorch`
+- `transformers`
+-  `fastapi`
+-  `geopy`
+- `modin[all]`
+- `requests`
+- `ray`
 
 Install these libraries using `pip`:
 ```bash
-pip install pandas numpy folium scikit-learn scipy
+pip install pandas numpy folium scikit-learn scipy pytoch transformers fastapi geopy modin[all] requests ray 
 ```
 
 ## Usage Instructions

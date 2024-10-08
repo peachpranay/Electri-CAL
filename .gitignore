@@ -1,5 +1,9 @@
 /.vscode
 /myenv
+ 
+/Prediction Model/__pycache__/
+/Prediction Model/ev_report_zip_90012.txt
+/route_calculation_result.json
 
 /Old
 /Prediction Model/latestEVPlot_temp.html

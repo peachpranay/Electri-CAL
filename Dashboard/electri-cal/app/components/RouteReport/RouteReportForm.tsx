@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import VehicleModelDropdown from "./VehicleModelDropdown";
 import LocationInput from "./LocationInput";
-import GenerateRouteReport from "./GenerateRouteReport";
+import GenerateRouteReport from "./routeReport";
 
 const RouteReportForm = () => {
   const [selectedCar, setSelectedCar] = useState("");
@@ -18,7 +18,7 @@ const RouteReportForm = () => {
       startLat,
       startLng,
       destinationLat,
-      destinationLng
+      destinationLng,
     });
   };
 
@@ -28,16 +28,16 @@ const RouteReportForm = () => {
         selectedCar={selectedCar}
         setSelectedCar={setSelectedCar}
       />
-  <LocationInput
-  startLat={startLat}
-  setStartLat={setStartLat}
-  startLng={startLng}
-  setStartLng={setStartLng}
-  destinationLat={destinationLat}
-  setDestinationLat={setDestinationLat}
-  destinationLng={destinationLng}
-  setDestinationLng={setDestinationLng}
-/>
+      <LocationInput
+        startLat={startLat}
+        setStartLat={setStartLat}
+        startLng={startLng}
+        setStartLng={setStartLng}
+        destinationLat={destinationLat}
+        setDestinationLat={setDestinationLat}
+        destinationLng={destinationLng}
+        setDestinationLng={setDestinationLng}
+      />
       <GenerateRouteReport onGenerateReport={handleGenerateReport} />
     </div>
   );

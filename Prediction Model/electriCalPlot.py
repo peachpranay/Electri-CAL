@@ -21,9 +21,15 @@ def addAmenitiesOnMap(mapObj, amenities):
     for row in amenities:
         if row[2] != 'school':
             location = (float(row[2]), float(row[3]))
-            folium.CircleMarker(location, popup=row[0], radius=3, color='blue').add_to(mapObj)
+            folium.CircleMarker(location, 
+                                popup=f'''<div style="font-family: Arial; font-size: 12px;">
+    <h4 style="text-align : center; font-weight : bold">Amenity</h4>
+    <strong>Type:</strong> {row[0]}
+</div>''', 
+                                radius=3, 
+                                color='blue').add_to(mapObj)
 
-def get_elevation_from_open_elevation(lat, lon, retries = 3):
+def getElevation(lat, lon, retries = 3):
     attempt = 0
 
     while attempt < retries:
@@ -111,7 +117,11 @@ if existingStations is not None:
             location=(station['Latitude'], station['Longitude']),
             radius=3,
             color='green',
-            popup=f'Chargers: {station["DC Fast Count"]}'
+            popup=f'''<div style="font-family: Arial; font-size: 12px;">
+    <h4 style="text-align : center; font-weight : bold">Existing Station</h4>
+    <strong>Station ID:</strong> {station['Station ID']}<br>
+    <strong>No. of Chargers:</strong> {station['DC Fast Count']}
+</div>'''
         ).add_to(evMap)
 
 # CHECKING CENTROIDS NEAR EXISTING EV STATIONS
@@ -134,7 +144,7 @@ with open(outputFile, 'w', newline='', encoding='utf-8') as csvfile:
             requiredChargers = int(ceil(count / 64))
 
             if len(nearbyStations) == 0 and not np.isnan(centroid[0]) and not np.isnan(centroid[1]):
-                elevation = get_elevation_from_open_elevation(centroid[0], centroid[1])
+                elevation = getElevation(centroid[0], centroid[1])
 
                 if elevation is not None and elevation > mountainThreshold:
                     amenityRadius = 10 / 111.32  # 10KM RADIUS IN DEGREES
@@ -152,7 +162,14 @@ with open(outputFile, 'w', newline='', encoding='utf-8') as csvfile:
                         location=shiftedLocation,
                         radius=5,
                         color='red',
-                        popup=f'Vehicles Nearby: {count}, Chargers: {adjustedChargerCount}'
+                        popup=f'''
+<div style="font-family: Arial; font-size: 12px;">
+    <h4 style="text-align : center; font-weight : bold">Suggested Station</h4>
+    <strong>Vehicles Nearby:</strong> {count}<br>
+    <strong>Suggested Chargers:</strong> {adjustedChargerCount}<br>
+    <strong>Elevation :</strong> {elevation}
+</div>
+'''
                     ).add_to(evMap)
 
                     writer.writerow({

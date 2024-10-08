@@ -10,3 +10,5 @@
 /Prediction Model/suggested_ev_stations_temp.csv
 /Prediction Model/elevationCountCheck.py
 /Prediction Model/electriCalCsv.py
+/Prediction Model/temp.py
+/Prediction Model/custom_popup_map.html

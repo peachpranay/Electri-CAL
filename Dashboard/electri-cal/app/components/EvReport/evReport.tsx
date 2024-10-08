@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import SelectZipCode from "./selectZipCode";
 import EvReportModal from "./evReportModal";
+import ErrorPopup from "./errorPopup";
 
 const formatReport = (reportText) => {
   const sections = reportText.split("\n\n");
@@ -53,21 +54,6 @@ const GenerateReport = () => {
       setIsLoading(false);
     }
   };
-
-  const ErrorPopup = ({ message, onClose }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg max-w-md">
-        <h2 className="text-xl font-bold mb-4 text-red-500">Error</h2>
-        <p className="text-black mb-4">{message}</p>
-        <button
-          className="bg-primary text-white px-4 py-2 rounded"
-          onClick={onClose}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <div className="pt-3 relative">

@@ -10,7 +10,7 @@ const Intro = () => {
   return (
     <div className="w-full lg:w-3/4 mb-10 lg:mb-0">
       <h1
-        className={`${orbitron.className} uppercase text-6xl text-white tracking-wide leading-snug custom-word-spacing`}
+        className={`${orbitron.className} uppercase text-6xl text-gray-200 tracking-wide leading-snug custom-word-spacing`}
       >
         Navigating Routes To Sustainable Mobility
       </h1>

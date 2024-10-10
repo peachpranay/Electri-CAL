@@ -12,6 +12,10 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        orbitron: ["var(--font-orbitron)"],
+        // You can add other font families here
+      },
     },
   },
   plugins: [require("daisyui")],

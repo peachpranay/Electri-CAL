@@ -31,11 +31,11 @@ const Team = () => {
           alt="Team photo"
           layout="fill"
           objectFit="cover"
-          className="card"
+          className="card shadow-md shadow-base-300 border border-gray-600"
         />
       </div>
       <div className="absolute card inset-0 bg-black bg-opacity-75 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out flex justify-center items-center">
-        <div className="card  text-white text-center px-4 mx-1 py-10 group-hover:border-2 group-hover:border-gray-200 group-hover:outline-gray-200 group-hover:outline-[10px] transition-all duration-500 ease-in-out">
+        <div className="card text-gray-200 text-center px-4 mx-1 py-10 group-hover:border-2 group-hover:border-gray-200 group-hover:outline-gray-200 group-hover:outline-[10px] transition-all duration-500 ease-in-out">
           <p className="underline underline-offset-8 text-3xl font-bold px-12 pt-16 pb-10 text-gray-200">
             OUR TEAM
           </p>

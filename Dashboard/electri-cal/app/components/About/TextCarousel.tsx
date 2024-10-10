@@ -1,4 +1,4 @@
-"use client"; // This line makes this a client component
+"use client";
 
 import React from "react";
 import { Orbitron } from "next/font/google";

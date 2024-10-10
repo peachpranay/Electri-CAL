@@ -1,18 +1,21 @@
 import React from "react";
-import ElectriCal from "../components/Header/electriCal";
-import HelpMenu from "../components/Header/aboutUs";
+import Header from "../components/About/Header";
+import Intro from "../components/About/Intro";
+import Team from "../components/About/Team";
+import Footer from "../components/About/Footer";
 
 const AboutUsPage = () => {
   return (
-    
-    <div className="bg-base-100 p-5">
-      <header className="grid grid-cols-[15fr_2fr] font-bold font-sans text-primary bg-base-300 p-3 card shadow-sm shadow-primary-content">
-        <ElectriCal />
-        <HelpMenu />
-      </header>
-      <p className = 'p-5'>About Us Placeholder</p>
-    </div>
-    
+    <>
+      <div className="p-5 h-screen overflow-hidden">
+        <Header />
+        <main className="flex flex-col h-[70vh] justify-between lg:flex-row w-full h-full max-w-8xl mx-auto my-6 p-4">
+          <Intro />
+          <Team />
+        </main>
+      </div>
+      <Footer />
+    </>
   );
 };
 

@@ -12,3 +12,6 @@
 /Prediction Model/electriCalCsv.py
 /Prediction Model/temp.py
 /Prediction Model/custom_popup_map.html
+
+/CSV Files/EV_stations_with_actual_zipcodes_finalformlatst2.csv
+/CSV Files/zipLatLon.json

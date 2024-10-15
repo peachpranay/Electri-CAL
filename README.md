@@ -3,6 +3,7 @@
 
 ## Overview
 This Python script uses K-Means clustering and spatial data analysis to recommend optimal locations for new Electric Vehicle (EV) charging stations in California. It takes into account existing EV station data, vehicle distribution patterns, and nearby amenities to suggest strategic placements that ensure accessibility for electric car owners while avoiding over-saturation.
+![Electri-Cal Architeture](Architecture/ElectriCal_Architecture.png)
 
 ## Key Features
 1. **Data Loading and Preprocessing:**

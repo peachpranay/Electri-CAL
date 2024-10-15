@@ -9,7 +9,7 @@ function VehicleModelDropdown({ selectedCar, setSelectedCar }) {
   const [openDropdown, setOpenDropdown] = useState(false);
 
   useEffect(() => {
-    fetch("/vehicleModels.json")
+    fetch("/Files/vehicleModels.json")
       .then((response) => response.json())
       .then((data) => {
         const models = data.available_models.map((model) =>

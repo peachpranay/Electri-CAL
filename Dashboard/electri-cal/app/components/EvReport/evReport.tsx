@@ -1,10 +1,10 @@
 "use client";
 
 import { SiGooglegemini } from "react-icons/si";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios";
-import SelectZipCode from "./selectZipCode";
+import SelectDistrict from "./selectDistrict";
 import EvReportModal from "./evReportModal";
 import ErrorPopup from "./errorPopup";
 
@@ -20,17 +20,27 @@ const GenerateReport = () => {
   const [report, setReport] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedZipCode, setSelectedZipCode] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [error, setError] = useState(null);
+  const [districtOptions, setDistrictOptions] = useState([]);
 
-  const zipOptions = [];
-  for (let i = 90001; i <= 99362; i++) {
-    zipOptions.push({ label: i, value: i });
-  }
-
+  useEffect(() => {
+    fetch("/Files/districts.json")
+      .then((response) => response.json())
+      .then((data) => {
+        const districtOptions = data.map((district) => ({
+          label: district,
+          value: district,
+        }));
+        setDistrictOptions(districtOptions);
+      })
+      .catch((err) => {
+        setError("Failed to load districts.");
+      });
+  }, []);
   const generateReport = async () => {
-    if (!selectedZipCode) {
-      setError("Please select a ZIP code");
+    if (!selectedDistrict) {
+      setError("Please select a District");
       return;
     }
 
@@ -39,7 +49,7 @@ const GenerateReport = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/generate_report/${selectedZipCode.value}`
+        `http://localhost:8000/generate_report/${selectedDistrict["value"]}`
       );
 
       setReport(response.data.report);
@@ -58,10 +68,10 @@ const GenerateReport = () => {
   return (
     <div className="pt-3 relative">
       <div className="grid grid-cols-[1fr_4fr]">
-        <SelectZipCode
-          zipOptions={zipOptions}
-          selectedZipCode={selectedZipCode}
-          setSelectedZipCode={setSelectedZipCode}
+        <SelectDistrict
+          districtOptions={districtOptions}
+          selectedDistrict={selectedDistrict}
+          setSelectedDistrict={setSelectedDistrict}
         />
 
         <button
@@ -82,7 +92,7 @@ const GenerateReport = () => {
           formatReport={formatReport}
           report={report}
           setShowPopup={setShowPopup}
-          selectedZipCode={selectedZipCode}
+          selectedDistrict={selectedDistrict}
         />
       )}
     </div>

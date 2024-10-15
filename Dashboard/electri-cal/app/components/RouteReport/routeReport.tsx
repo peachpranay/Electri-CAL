@@ -62,7 +62,6 @@ const GenerateRouteReport = ({
       }
 
       const data = await response.json();
-
       const routeData = data.route || {};
       const traversalSummary = routeData.traversal_summary || {};
 

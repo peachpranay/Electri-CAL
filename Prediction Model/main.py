@@ -27,10 +27,10 @@ async def proxy(request: Request):
     
     return response.json()
 
-@app.get("/generate_report/{zip_code}")
-async def get_report(zip_code: str):
+@app.get("/generate_report/{district}")
+async def get_report(district: str):
     try:
-        report = generate_report(zip_code)
+        report = generate_report(district)
         return {"report": report}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

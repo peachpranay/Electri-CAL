@@ -83,4 +83,4 @@ pip install pandas numpy folium scikit-learn scipy pytoch transformers fastapi g
 ---
 
 ## Contact
-For any questions or contributions, please reach out at [pranay.rajvanshi@gmail.com] [parthratra11@gmail.com].
+For any questions or contributions, please reach out at [pranay.rajvanshi@gmail.com] [sharma15705rahul@gmail.com] [parthratra11@gmail.com].
